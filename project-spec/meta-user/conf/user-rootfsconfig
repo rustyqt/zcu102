@@ -1,0 +1,10 @@
+#Note: Mention Each package in individual line
+#These packages will get added into rootfs menu entry
+
+CONFIG_gpio-demo
+CONFIG_peekpoke
+CONFIG_dma-proxy
+CONFIG_dma-proxy-test
+CONFIG_xilinx-axidma
+CONFIG_axidma-benchmark
+CONFIG_axidma-transfer
