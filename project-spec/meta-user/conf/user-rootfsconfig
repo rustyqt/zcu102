@@ -8,3 +8,5 @@ CONFIG_dma-proxy-test
 CONFIG_xilinx-axidma
 CONFIG_axidma-benchmark
 CONFIG_axidma-transfer
+CONFIG_aes-gcm-encrypt
+CONFIG_aes-gcm-decrypt

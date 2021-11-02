@@ -1503,9 +1503,9 @@ CONFIG_kexec=y
 #
 # libgcc 
 #
-# CONFIG_libgcc is not set
+CONFIG_libgcc=y
 # CONFIG_libgcc-dbg is not set
-# CONFIG_libgcc-dev is not set
+CONFIG_libgcc-dev=y
 
 #
 # libgpg-error 
@@ -2685,9 +2685,9 @@ CONFIG_packagegroup-core-boot=y
 #
 # packagegroup-core-buildessential 
 #
-# CONFIG_packagegroup-core-buildessential is not set
+CONFIG_packagegroup-core-buildessential=y
 # CONFIG_packagegroup-core-buildessential-dbg is not set
-# CONFIG_packagegroup-core-buildessential-dev is not set
+CONFIG_packagegroup-core-buildessential-dev=y
 
 #
 # packagegroup-core-sdk 
@@ -4170,6 +4170,8 @@ CONFIG_auto-login=y
 #
 # apps 
 #
+CONFIG_aes-gcm-decrypt=y
+CONFIG_aes-gcm-encrypt=y
 CONFIG_axidma-benchmark=y
 CONFIG_axidma-transfer=y
 CONFIG_dma-proxy-test=y

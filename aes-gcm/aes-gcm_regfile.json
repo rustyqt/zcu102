@@ -1,0 +1,195 @@
+{
+  "name": "lynx",
+  "configuration": {
+    "hdl" : {
+      "rtlPath" : "<model_file>/../src",
+      "simPath" : "<model_file>/../sim",
+      "tbPath"  : "<model_file>/../tb",
+      "rtlLibrary" : "ivae_regfile",
+      "tbLibrary"  : "ivae_regfile_tb",
+      "headerTemplate" : "<model_file>/../regwiz/templates/headers/header.txt"
+    },
+    "software" : {
+      "path" : "<model_file>/../sw"
+    },
+    "documentation" : {
+      "path" : "<model_file>/../doc",
+      "moduleTemplate" : [
+        "<model_file>/../regwiz/templates/docx/moduleregistermap-template.docx",
+        "<model_file>/../regwiz/templates/docx/registerdescription-template.docx"
+      ]
+    }
+  },
+    
+  "interfaces": [
+    { 
+      "name": "aes_gcm_regfile",
+      "type": "SBI",
+      "description": [
+        "AES-GCM Register File"
+      ],
+      
+      "registers": [
+        {
+          "name": "KEY",
+          "address": "auto:stride:8",
+          "location": "pif",
+          "summary": ["256-bit AES key."],
+          "description": ["256-bit AES key."],
+          "access": "RW",
+          "signal": "std_logic_vector",
+          "reset": "0x0000",
+          "width": 32
+        },
+        {
+          "name": "IV",
+          "address": "auto:stride:3",
+          "location": "pif",
+          "summary": ["96-bit IV."],
+          "description": ["96-bit IV."],
+          "access": "RW",
+          "signal": "std_logic_vector",
+          "reset": "0x0000",
+          "width": 32
+        },
+        {
+          "name": "AAD_LENGTH",
+          "address": "auto",
+          "location": "pif",
+          "summary": ["AAD length in 128-bit words."],
+          "description": ["AAD length in 128-bit words."],
+          "access": "RW",
+          "signal": "unsigned",
+          "reset": "0x0000",
+          "width": 32
+        },
+        {
+          "name": "PT_LENGTH",
+          "address": "auto",
+          "location": "pif",
+          "summary": ["PT length in 128-bit words."],
+          "description": ["PT length in 128-bit words."],
+          "access": "RW",
+          "signal": "unsigned",
+          "reset": "0x0000",
+          "width": 32
+        },
+        {
+          "name": "AES_GCM_CTRL",
+          "address": "auto",
+          "location": "core",
+          "summary": ["Controls AES-GCM."],
+          "description": ["Controls AES-GCM."],
+          "fields": [
+            {
+              "name": "reserved",
+              "position": "31:7",
+              "description": ["Reserved."],
+              "access": "RW",
+              "signal": "std_logic_vector",
+              "reset": "0x00",
+              "coreSignalProperties":{
+                "useWriteEnable":true
+              }
+            },
+            {
+              "name": "MODE",
+              "position": "6:5",
+              "description": ["0b00: AES_MODE_128_C - AES 128-bit.",
+                              "0b01: AES_MODE_192_C - AES 192-bit.",
+                              "0b10: AES_MODE_256_C - AES 256-bit.",
+                              "0b11: AES_MODE_ALL_C - Reserved."],
+              "access": "RW",
+              "signal": "std_logic_vector",
+              "reset": "0b10",
+              "coreSignalProperties":{
+                "useWriteEnable":true
+              }
+            },
+            {
+              "name": "PIPE_RESET",
+              "position": "4",
+              "description": ["0b0: NOP - No operation.",
+                              "0b1: RESET - Resets Pipeline."],
+              "access": "RW",
+              "signal": "std_logic",
+              "reset": "0x00",
+              "coreSignalProperties":{
+                "useWriteEnable":true
+              }
+            },
+            {
+              "name": "SET_KEY",
+              "position": "3",
+              "description": ["0b0: NOP - No operation.",
+                              "0b1: LOAD - Loads KEY."],
+              "access": "RW",
+              "signal": "std_logic",
+              "reset": "0x00",
+              "coreSignalProperties":{
+                "useWriteEnable":true
+              }
+            },
+            {
+              "name": "SET_IV",
+              "position": "2",
+              "description": ["0b0: NOP - No operation.",
+                              "0b1: LOAD - Loads IV."],
+              "access": "RW",
+              "signal": "std_logic",
+              "reset": "0x00",
+              "coreSignalProperties":{
+                "useWriteEnable":true
+              }
+            },
+            {
+              "name": "START",
+              "position": "1",
+              "description": ["0b0: NOP - No operation.",
+                              "0b1: START - Starts the ICB counter."],
+              "access": "RW",
+              "signal": "std_logic",
+              "reset": "0x00",
+              "coreSignalProperties":{
+                "useWriteEnable":true
+              }
+            },
+            {
+              "name": "STOP",
+              "position": "0",
+              "description": ["0b0: NOP - No operation.",
+                              "0b1: STOP - Stops the ICB counter."],
+              "access": "RW",
+              "signal": "std_logic",
+              "reset": "0x00",
+              "coreSignalProperties":{
+                "useWriteEnable":true
+              }
+            }
+          ]
+        },
+        {
+          "name": "AES_GCM_STATUS",
+          "address": "auto",
+          "location": "core",
+          "summary": ["AES-GCM Status."],
+          "description": ["AES-GCM Status."],
+          "fields": [
+            {
+              "name": "ICB_OVF",
+              "position": "0",
+              "description": ["0b0: NOOVF - No ICB counter overflow.",
+			                        "0b1: OVF - ICB counter overflow."],
+              "access": "RO",
+              "signal": "std_logic",
+              "reset": "0x00",
+              "coreSignalProperties":{
+                "useReadEnable":true
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
