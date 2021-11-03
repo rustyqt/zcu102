@@ -19,6 +19,9 @@
 # Launch the kernel configuration menu
     petalinux-config -c kernel
 
+# Configure all subsystems
+    petalinux-config
+
 # Build PetaLinux
     petalinux-build
 
@@ -37,6 +40,10 @@
 
 # Connect to serial console
     sudo picocom -b 115200 /dev/ttyUSB3
+
+# Connect via SSH
+    ssh root@192.168.0.140
+    alias ls='ls --color=auto'
 
 # Load xilinx-axidma driver and run axidma-benchmark application
 
