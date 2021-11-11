@@ -45,6 +45,10 @@
     ssh root@192.168.0.140
     alias ls='ls --color=auto'
 
+
+# Compile xilinx-axidma library
+    make CROSS_COMPILE=aarch64-linux-gnu- library
+
 # Load xilinx-axidma driver and run axidma-benchmark application
 
         root@zcu102:~# modprobe xilinx-axidma
