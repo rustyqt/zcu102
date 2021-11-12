@@ -11,7 +11,7 @@
     petalinux-create --type project --template zynqMP --name zcu102
 
 # Configure hw platform (Set DTG Settings -> template to "zcu102-rev1.0")
-    petalinux-config --get-hw-description="/media/lynx/9016-4EF8/mpsoc_preset_wrapper.xsa"
+    petalinux-config --get-hw-description="/media/lynx/3BB9-E4E0/mpsoc_preset_wrapper.xsa"
 
 # Launch the root file system configuration menu
     petalinux-config -c rootfs

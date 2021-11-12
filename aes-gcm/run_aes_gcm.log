@@ -1,0 +1,36 @@
+root@zcu102:~/aes-gcm# ./run_aes_gcm.py 
+AXI DMA Init
+Found 1 TX DMA channel(s).
+Found 1 RX DMA channel(s).
+TX DMA channel number(s): [0]
+RX DMA channel number(s): [1]
+aad_pt_length: 4194336
+aad_ct_tag_length: 4194352
+Put aad_pt
+key[32] = 3db3c45df9d58768173e47be81fd1741f4e0439ff3fb167ec16b7e7748eac80a
+iv[12] = 73dff6575077b23433306a39
+tx_id[20] = b0bdaed2948b4f485629e9cf7f1173728bc4c9a9
+tag[16] = ba0e18bdb06bc49835cfe0c2d7605354
+Run AXI DMA two-way transfer
+Time Software Encryption: 0s 347806us  (=    96.48 Mbit/s)
+Time Hardware Encryption: 0s 3245us    (= 10340.47 Mbit/s  -> 10.34 Gbit/s)
+
+Decrypt. OK.
+PT:
+b0bdaed2948b4f485629e9cf7f117372
+8bc4c9a973dff6575077b23433306a39
+afa98a7a9137ed15b5175d5c17244786
+9171a760082040069b5f34ef5f2d6b64
+HW:
+b0bdaed2948b4f485629e9cf7f117372
+8bc4c9a973dff6575077b23433306a39
+29f5cb5a8c07168a3278b4398a2b28ea
+d98fca5580144873e2c16cd226c162d1
+SW:
+b0bdaed2948b4f485629e9cf7f117372
+8bc4c9a973dff6575077b23433306a39
+29f5cb5a8c07168a3278b4398a2b28ea
+d98fca5580144873e2c16cd226c162d1
+Success: HW and SW encryption is identical!
+
+

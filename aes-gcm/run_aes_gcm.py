@@ -14,7 +14,7 @@ key = get_random_bytes(32)
 iv  = get_random_bytes(12)
 
 aad_len = 32
-pt_len  = 4096
+pt_len  = 2**22
 
 aesgcm = aes_gcm(AES_GCM_BASE_ADDR, key, iv, aad_len, pt_len)
 
