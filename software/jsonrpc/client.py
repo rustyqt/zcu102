@@ -16,9 +16,9 @@ def main():
 
     response = requests.post(url, json=payload).json()
     
-    print("--> " + str(payload))
-    print("<-- " + str(response))
-
+    print("--> " + json.dumps(payload))
+    print("<-- " + json.dumps(response))
+    
     assert response["result"] == "Hello World!"
     assert response["id"] == 0
 
@@ -32,8 +32,8 @@ def main():
 
     response = requests.post(url, json=payload).json()
     
-    print("--> " + str(payload))
-    print("<-- " + str(response))
+    print("--> " + json.dumps(payload))
+    print("<-- " + json.dumps(response))
 
 
 if __name__ == "__main__":
