@@ -2,6 +2,7 @@
 
 import socket
 
+from tcp import tcp
 from jsonrpc import JSONRPCResponseManager, dispatcher
 
 
@@ -44,12 +45,14 @@ if __name__ == '__main__':
         # Accept connections
         conn, addr = s.accept()
 
+        t = tcp(conn)
+
         print("Accept new connection from " + str(addr[0]))
         
         # Receive data
         while True:
     
-            data = conn.recv(1024)
+            data = t.recv()
 
             if not data:
                 break
@@ -58,8 +61,8 @@ if __name__ == '__main__':
             response = jsonrpc_handler(data)
 
             # Transmit Response to Client
-            conn.sendall(response.encode('utf-8'))
+            t.send(response.encode('utf-8'))
 
-        conn.close()
+        t.close()
         print("Close connection.")
     

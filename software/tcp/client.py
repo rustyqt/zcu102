@@ -1,38 +1,11 @@
 #!/usr/bin/python
 
-import socket
-import json
-
-def create_socket(HOST='localhost', PORT=4000):
-
-    # Create an INET, STREAMing socket
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    # Connect to the server
-    s.connect((HOST, PORT))
-
-    # Return socket
-    return s
-
-def send(socket, request):
-    # JSON dump
-    req = json.dumps(request)
-
-    # Send data
-    s.sendall(req.encode('utf-8'))
-
-    # Receive data
-    resp = s.recv(2048)
-
-    # Return response
-    return json.loads(resp)
-
-
+from rpc import rpc
 
 if __name__ == '__main__':    
 
     # Create socket
-    s = create_socket()
+    r = rpc()
 
     # Create JSON request
     req = {
@@ -41,19 +14,19 @@ if __name__ == '__main__':
         "id": 0
     }
 
-    resp = send(s, req)
+    resp = r.call(req)
 
     print(req)
     print(resp)
 
-    # Call echo method
+    # Create JSON request
     req = {
         "method": "mult",
         "params": [12, 4],
         "id": 1
     }
 
-    resp = send(s, req)
+    resp = r.call(req)
 
     print(req)
     print(resp)
