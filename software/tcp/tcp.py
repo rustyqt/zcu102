@@ -12,6 +12,7 @@ class tcp:
         return self.sock.connect((host, port))
     
     def send(self, msg):
+        # Send all and add termination character
         self.sock.sendall(msg + b'\x00')
 
     def recv(self):

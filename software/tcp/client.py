@@ -1,11 +1,11 @@
 #!/usr/bin/python
 
-from rpc import rpc
+import rpc
 
 if __name__ == '__main__':    
 
     # Create socket
-    r = rpc()
+    r = rpc.rpc()
 
     # Create JSON request
     req = {
@@ -23,6 +23,20 @@ if __name__ == '__main__':
     req = {
         "method": "mult",
         "params": [12, 4],
+        "id": 1
+    }
+
+    resp = r.call(req)
+
+    print(req)
+    print(resp)
+
+
+
+    # Create JSON request
+    req = {
+        "method": "get_val",
+        "params": [],
         "id": 1
     }
 

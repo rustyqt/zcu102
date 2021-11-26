@@ -1,10 +1,30 @@
 #!/usr/bin/python
 
 import socket
+import tcp
 
-from tcp import tcp
-from jsonrpc import JSONRPCResponseManager, dispatcher
+from jsonrpc import JSONRPCResponseManager, dispatcher     
 
+class myclass():
+    def __init__(self, value):
+        self.value = value
+
+    def set_val(self, value):
+        self.value = value
+
+    def get_val(self):
+        return self.value
+
+
+@dispatcher.add_method
+def set_val(value):
+    global c
+    c.set_val(value)
+
+@dispatcher.add_method
+def get_val():
+    global c
+    return c.get_val()
 
 @dispatcher.add_method
 def echo(message):
@@ -14,7 +34,9 @@ def echo(message):
 def mult(a, b):
     return a*b
 
-def jsonrpc_handler(request):
+
+# RPC Handler
+def handle(request):
 
     # JSON RPC Request Handler
     response = JSONRPCResponseManager.handle(request, dispatcher)
@@ -24,8 +46,6 @@ def jsonrpc_handler(request):
     print("<-- " + str(response.json) + "\n")
 
     return response.json
-
-
 
 
 if __name__ == '__main__':    
@@ -40,12 +60,15 @@ if __name__ == '__main__':
     
     # Start server socket
     s.listen(1)
-    
+
+    #Init
+    c = myclass(5)
+
     while True:
         # Accept connections
         conn, addr = s.accept()
 
-        t = tcp(conn)
+        t = tcp.tcp(conn)
 
         print("Accept new connection from " + str(addr[0]))
         
@@ -58,7 +81,7 @@ if __name__ == '__main__':
                 break
 
             # Call JSON RPC Handler
-            response = jsonrpc_handler(data)
+            response = handle(data)
 
             # Transmit Response to Client
             t.send(response.encode('utf-8'))
