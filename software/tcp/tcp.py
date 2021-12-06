@@ -13,7 +13,7 @@ class tcp:
     
     def send(self, msg):
         # Send all and add termination character
-        self.sock.sendall(msg + b'\x00')
+        self.sock.sendall(msg + b'\n')
 
     def recv(self):
         msg = b''
@@ -25,7 +25,8 @@ class tcp:
 
             # Concat chunks to message
             msg += chunk
-            if msg[-1] == 0: 
+
+            if msg[-1] == 10:    # Check for '\n' (=10)
                 return msg[0:-1]
 
     def close(self):

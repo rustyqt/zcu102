@@ -1,0 +1,30 @@
+[
+	{
+		"name": "set_val",
+		"params": {
+			"value": 0
+		},
+		"returns" : 0
+	},
+	{
+		"name": "get_val",
+		"params": {
+		},
+		"returns" : 0
+	},
+    {
+		"name": "mult",
+		"params": {
+			"a": 0,
+            "b": 0
+		},
+		"returns" : 0
+	},
+    {
+		"name": "echo",
+		"params": {
+			"message": ""
+		},
+		"returns" : ""
+	}
+]
