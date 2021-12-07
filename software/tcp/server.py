@@ -1,38 +1,32 @@
 #!/usr/bin/python
 
+import inspect
+
 import socket
 import tcp
 
+import json
 from jsonrpc import JSONRPCResponseManager, dispatcher     
 
 class myclass():
-    def __init__(self, value):
+    def __init__(self, value : int = 0):
         self.value = value
 
-    def set_val(self, value):
-        self.value = value
+    def echo(self, message : str) -> str:
+        return message
 
-    def get_val(self):
+    def set_val(self, value : int) -> int:
+        self.value = value
+        return 0
+
+    def get_val(self) -> int:
         return self.value
 
+    def add(self, a : int, b : int) -> int:
+        return a+b
 
-@dispatcher.add_method
-def set_val(value):
-    global c
-    c.set_val(value)
-
-@dispatcher.add_method
-def get_val():
-    global c
-    return c.get_val()
-
-@dispatcher.add_method
-def echo(message):
-    return message
-
-@dispatcher.add_method
-def mult(a, b):
-    return a*b
+    def mult(self, a : int, b : int) -> int:
+        return a*b
 
 
 # RPC Handler
@@ -46,7 +40,6 @@ def handle(request):
     print("<-- " + str(response.json) + "\n")
 
     return response.json
-
 
 if __name__ == '__main__':    
     HOST = ''    # socket.gethostname()
@@ -62,7 +55,38 @@ if __name__ == '__main__':
     s.listen(1)
 
     #Init
-    c = myclass(5)
+    c = myclass()
+
+    dispatcher.build_method_map(c)
+
+    print("RPC Procedures:")
+    spec = []
+    for procedure in dispatcher:
+        # Get Signature
+        sig = inspect.signature(dispatcher[procedure])
+        print(procedure + str(sig))
+        
+        # Get Parameters
+        params = {}
+        for param in sig.parameters.values():
+            params[param.name] = param.annotation()
+
+        # Get Return Annotation
+        return_type = sig.return_annotation()
+
+        # Create Method
+        method = {}
+        method["name"] = procedure
+        method["params"] = params
+        method["returns"] = return_type
+        
+        # Append method to RPC spec
+        spec.append(method)
+
+    # Write spec to JSON file
+    with open('spec.json', 'w') as f:
+        json.dump(spec, f, indent=4)
+
 
     while True:
         # Accept connections

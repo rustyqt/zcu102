@@ -1,7 +1,5 @@
 #!/usr/bin/python
 
-import rpc
-
 from jsonrpc_pyclient.connectors import socketclient
 from clientstub import clientstub
     
@@ -19,6 +17,10 @@ if __name__ == '__main__':
 
     # Call mult()
     result = client.mult(4, 2)
+    print(result)
+
+    # Call add()
+    result = client.add(2, 2)
     print(result)
 
     # Call set_val()

@@ -13,11 +13,19 @@ class clientstub(client.Client):
     def __init__(self, connector, version='2.0'):
         super(clientstub, self).__init__(connector, version)
 
-    def set_val(self, value):
+    def add(self, a, b):
         parameters = {}
-        parameters['value'] = value
+        parameters['a'] = a
+        parameters['b'] = b
 
-        result = self.call_method('set_val', parameters)
+        result = self.call_method('add', parameters)
+        return result
+
+    def echo(self, message):
+        parameters = {}
+        parameters['message'] = message
+
+        result = self.call_method('echo', parameters)
         return result
 
     def get_val(self):
@@ -34,11 +42,11 @@ class clientstub(client.Client):
         result = self.call_method('mult', parameters)
         return result
 
-    def echo(self, message):
+    def set_val(self, value):
         parameters = {}
-        parameters['message'] = message
+        parameters['value'] = value
 
-        result = self.call_method('echo', parameters)
+        result = self.call_method('set_val', parameters)
         return result
 
 
