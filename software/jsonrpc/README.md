@@ -2,9 +2,6 @@
 
 ### Folder Structure
 
-    -> server 
-      -> jsonrpc_server.py
-      -> tcp.py
     -> client
       -> jsonrpc_client.py
       -> gen_jsonrpc_client.sh
@@ -13,6 +10,9 @@
     -> examples
       -> server.py
       -> client.py
+    -> server 
+      -> jsonrpc_server.py
+      -> tcp.py
 
 ### Description
 
