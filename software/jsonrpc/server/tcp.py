@@ -8,6 +8,7 @@ class tcp:
         else:
             self.sock = sock
 
+
     def connect(self, host='localhost', port=4000):
         return self.sock.connect((host, port))
     

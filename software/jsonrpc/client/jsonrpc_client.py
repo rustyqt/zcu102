@@ -9,9 +9,9 @@
 
 from jsonrpc_pyclient import client
 
-class clientstub(client.Client):
+class jsonrpc_client(client.Client):
     def __init__(self, connector, version='2.0'):
-        super(clientstub, self).__init__(connector, version)
+        super(jsonrpc_client, self).__init__(connector, version)
 
     def add(self, a, b):
         parameters = {}
