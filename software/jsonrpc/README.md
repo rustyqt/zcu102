@@ -14,5 +14,14 @@
     <-- {'result': 8192, 'id': 1}
 
 
+### Folder Structure
 
-
+    -> server 
+      -> server.py
+      -> tcp.py
+    -> client
+      -> client.py
+      -> client\_stub.py
+      -> gen\_stub.sh
+    -> common
+      -> spec.json

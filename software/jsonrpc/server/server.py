@@ -84,7 +84,7 @@ if __name__ == '__main__':
         spec.append(method)
 
     # Write spec to JSON file
-    with open('spec.json', 'w') as f:
+    with open('../common/spec.json', 'w') as f:
         json.dump(spec, f, indent=4)
 
 
