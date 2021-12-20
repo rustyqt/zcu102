@@ -13,40 +13,69 @@ class jsonrpc_client(client.Client):
     def __init__(self, connector, version='2.0'):
         super(jsonrpc_client, self).__init__(connector, version)
 
-    def add(self, a, b):
+    def myclass_add(self, a, b):
         parameters = {}
         parameters['a'] = a
         parameters['b'] = b
 
-        result = self.call_method('add', parameters)
+        result = self.call_method('myclass_add', parameters)
         return result
 
-    def echo(self, message):
+    def myclass_echo(self, message):
         parameters = {}
         parameters['message'] = message
 
-        result = self.call_method('echo', parameters)
+        result = self.call_method('myclass_echo', parameters)
         return result
 
-    def get_val(self):
+    def myclass_get_val(self):
         parameters = None
 
-        result = self.call_method('get_val', parameters)
+        result = self.call_method('myclass_get_val', parameters)
         return result
 
-    def mult(self, a, b):
+    def myclass_mult(self, a, b):
         parameters = {}
         parameters['a'] = a
         parameters['b'] = b
 
-        result = self.call_method('mult', parameters)
+        result = self.call_method('myclass_mult', parameters)
         return result
 
-    def set_val(self, value):
+    def myclass_set_val(self, value):
         parameters = {}
         parameters['value'] = value
 
-        result = self.call_method('set_val', parameters)
+        result = self.call_method('myclass_set_val', parameters)
+        return result
+
+    def mytftp_get_ip(self):
+        parameters = None
+
+        result = self.call_method('mytftp_get_ip', parameters)
+        return result
+
+    def mytftp_set_ip(self, ip):
+        parameters = {}
+        parameters['ip'] = ip
+
+        result = self.call_method('mytftp_set_ip', parameters)
+        return result
+
+    def myaes_config(self, iv, key):
+        parameters = {}
+        parameters['iv'] = iv
+        parameters['key'] = key
+
+        result = self.call_method('myaes_config', parameters)
+        return result
+
+    def myaes_encrypt(self, source, target):
+        parameters = {}
+        parameters['source'] = source
+        parameters['target'] = target
+
+        result = self.call_method('myaes_encrypt', parameters)
         return result
 
 

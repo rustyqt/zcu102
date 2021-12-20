@@ -14,22 +14,35 @@ if __name__ == '__main__':
     # Create RPC client
     rpc = jsonrpc_client(connector)
 
-    # Call echo()    
-    result = rpc.echo("Hello RPC!")
-    print("rpc.echo('Hello RPC!') -> " + str(result))
+    # Use myclass methods
+    result = rpc.myclass_echo("Hello RPC!")
+    print("rpc.myclass_echo('Hello RPC!') -> " + str(result))
 
-    # Call mult()
-    result = rpc.mult(4, 2)
-    print("rpc.mult(4, 2) -> " + str(result))
+    result = rpc.myclass_mult(4, 2)
+    print("rpc.myclass_mult(4, 2) -> " + str(result))
 
-    # Call add()
-    result = rpc.add(2, 2)
-    print("rpc.add(2, 2) -> " + str(result))
+    result = rpc.myclass_add(2, 2)
+    print("rpc.myclass_add(2, 2) -> " + str(result))
 
-    # Call set_val()
-    result = rpc.set_val(2)
-    print("rpc.set_val(2) -> " + str(result))
+    result = rpc.myclass_set_val(2)
+    print("rpc.myclass_set_val(2) -> " + str(result))
 
-    # Call get_val()
-    result = rpc.get_val()
-    print("rpc.get_val() -> " + str(result))
+    result = rpc.myclass_get_val()
+    print("rpc.myclass_get_val() -> " + str(result))
+
+    # Use mytftp methods
+    result = rpc.mytftp_get_ip()
+    print("rpc.mytftp_get_ip() -> " + str(result))
+    
+    result = rpc.mytftp_set_ip("192.168.0.10")
+    print("rpc.mytftp_set_ip() -> " + str(result))
+    
+    result = rpc.mytftp_get_ip()
+    print("rpc.mytftp_get_ip() -> " + str(result))
+
+    # Use myaes methods
+    result = rpc.myaes_config(1234, 555)
+    print("rpc.myaes_config() -> " + str(result))
+
+    result = rpc.myaes_encrypt("pt", "ct")
+    print("rpc.myaes_encrypt() -> " + str(result))

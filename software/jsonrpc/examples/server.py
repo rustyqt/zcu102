@@ -25,9 +25,37 @@ class myclass():
     def mult(self, a : int, b : int) -> int:
         return a*b
 
+class mytftp():
+    def __init__(self, ip : str = "127.0.0.1"):
+        self.ip = ip
+    
+    def set_ip(self, ip : str) -> int:
+        self.ip = ip
+        return 0
 
-inst = myclass()
+    def get_ip(self) -> str:
+        return self.ip
 
-rpc = jsonrpc_server(inst)
+class myaes():
+    def __init__(self, aes_type : str = "AESGCM", key : int = 0, iv : int = 0):
+        self.type = aes_type
+        self.key = key
+        self.iv = iv
+
+    def config(self, key : int, iv : int) -> int:
+        self.key = key
+        self.iv = iv
+        return 0
+
+    def encrypt(self, source : str, target : str) -> int:
+        return 0
+
+
+
+rpc = jsonrpc_server()
+
+rpc.add(myclass())
+rpc.add(mytftp())
+rpc.add(myaes())
 
 rpc.run()

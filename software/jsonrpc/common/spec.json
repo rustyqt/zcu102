@@ -1,6 +1,6 @@
 [
     {
-        "name": "add",
+        "name": "myclass_add",
         "params": {
             "a": 0,
             "b": 0
@@ -8,19 +8,19 @@
         "returns": 0
     },
     {
-        "name": "echo",
+        "name": "myclass_echo",
         "params": {
             "message": ""
         },
         "returns": ""
     },
     {
-        "name": "get_val",
+        "name": "myclass_get_val",
         "params": {},
         "returns": 0
     },
     {
-        "name": "mult",
+        "name": "myclass_mult",
         "params": {
             "a": 0,
             "b": 0
@@ -28,9 +28,37 @@
         "returns": 0
     },
     {
-        "name": "set_val",
+        "name": "myclass_set_val",
         "params": {
             "value": 0
+        },
+        "returns": 0
+    },
+    {
+        "name": "mytftp_get_ip",
+        "params": {},
+        "returns": ""
+    },
+    {
+        "name": "mytftp_set_ip",
+        "params": {
+            "ip": ""
+        },
+        "returns": 0
+    },
+    {
+        "name": "myaes_config",
+        "params": {
+            "key": 0,
+            "iv": 0
+        },
+        "returns": 0
+    },
+    {
+        "name": "myaes_encrypt",
+        "params": {
+            "source": "",
+            "target": ""
         },
         "returns": 0
     }

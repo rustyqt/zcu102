@@ -9,39 +9,9 @@ import json
 from jsonrpc import JSONRPCResponseManager, dispatcher
 
 class jsonrpc_server:
-    def __init__(self, exposed_object):
-
-        # Expose all public methods of provided object
-        dispatcher.build_method_map(exposed_object)
-
-        # Create spec.json for exposed methods
-        spec = []
-        for procedure in dispatcher:
-            # Get Signature
-            sig = inspect.signature(dispatcher[procedure])
-            print(procedure + str(sig))
-            
-            # Get Parameters
-            params = {}
-            for param in sig.parameters.values():
-                params[param.name] = param.annotation()
-
-            # Get Return Annotation
-            return_type = sig.return_annotation()
-
-            # Create Method
-            method = {}
-            method["name"] = procedure
-            method["params"] = params
-            method["returns"] = return_type
-            
-            # Append method to RPC spec
-            spec.append(method)
-
-        # Write spec to JSON file
-        with open('../common/spec.json', 'w') as f:
-            json.dump(spec, f, indent=4)
-
+    def __init__(self, exposed_object=None, filename="../common/spec.json"):
+        if exposed_object != None:
+            self.add(exposed_object, filename)
 
     # RPC Handler
     def _handle(self, request):
@@ -54,6 +24,53 @@ class jsonrpc_server:
         print("<-- " + str(response.json) + "\n")
 
         return response.json
+
+    def add(self, exposed_object, filename="../common/spec.json"):
+        # Expose all public methods of provided object
+        dispatcher.build_method_map(exposed_object, prefix=type(exposed_object).__name__ + "_")
+
+        # Create spec for exposed methods
+        self.spec = []
+        for procedure in dispatcher:
+            # Get Signature
+            sig = inspect.signature(dispatcher[procedure])
+            print(procedure + str(sig))
+            
+            # Get Parameters
+            params = {}
+            for param in sig.parameters.values():
+                params[param.name] = param.annotation()
+                
+                is_int = params[param.name] == int()
+                is_str = params[param.name] == str()
+                is_bool = params[param.name] == bool()
+
+                assert is_int or is_str or is_bool, "Param type hint not provided or invalid."
+
+            # Get Return Annotation
+            return_type = sig.return_annotation()
+            
+            is_int = return_type == int()
+            is_str = return_type == str()
+            is_bool = return_type == bool()
+
+            assert is_int or is_str or is_bool, "Return type hint not provided or invalid."
+
+            # Create Method
+            method = {}
+            method["name"] = procedure
+            method["params"] = params
+            method["returns"] = return_type
+            
+            print(method)
+            # Append method to RPC spec
+            self.spec.append(method)
+
+        # Write spec to JSON file
+        with open(filename, 'w') as f:
+            json.dump(self.spec, f, indent=4)        
+
+
 
     def run(self):
         HOST = ''    # socket.gethostname()
