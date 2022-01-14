@@ -158,7 +158,30 @@ Check devices major numbers
     ls -la /dev/xilinx-axidma
 
 
-    
+## U-boot TFTP
+
+setenv serverip 192.168.0.142
+setenv ipaddr 192.168.0.144
+
+tftpboot 0x3000000 Image
+tftpboot 0x2A00000 system.dtb
+tftpboot 0x5000000 rootfs.cpio.gz.u-boot
+booti 0x3000000 0x5000000 0x2A00000
+
+
+setenv bootcmd_tftp "tftpboot 0x3000000 Image; tftpboot 0x2A00000 system.dtb; tftpboot 0x5000000 rootfs.cpio.gz.u-boot; booti 0x3000000 0x5000000 0x2A00000"
+
+setenv boot_targets "tftp mmc0 jtag mmc0 mmc1 qspi0 nand0 usb0 usb1 scsi0 pxe dhcp"
+
+saveenv
+
+## Run Demo Software
+
+    scp -r lynx@192.168.0.142:/home/lynx/git/zcu102/software/aes-gcm .
+    cd aes-gcm/pymods/; chmod a+x install.sh; ./install.sh; cd ..; chmod a+x *.py;
+    modprobe xilinx-axidma
+    ./run_aes_gcm.py
+
 
 ## Utilities
     
