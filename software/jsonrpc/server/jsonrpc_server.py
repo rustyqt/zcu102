@@ -18,10 +18,10 @@ class jsonrpc_server:
 
         # JSON RPC Request Handler
         response = JSONRPCResponseManager.handle(request, dispatcher)
-
+        
         # Print Request and Response
-        print("--> " + str(request.decode()))
-        print("<-- " + str(response.json) + "\n")
+        print("--> " + request.decode())
+        print("<-- " + response.json + "\n")
 
         return response.json
 

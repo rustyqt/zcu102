@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0, '../client/')
 
 from jsonrpc_pyclient.connectors import socketclient
-from jsonrpc_client import jsonrpc_client
+from jsonrpc_example_client import jsonrpc_example_client
     
 if __name__ == '__main__':    
 
@@ -12,7 +12,7 @@ if __name__ == '__main__':
     connector = socketclient.TcpSocketClient("127.0.0.1", 4000)
     
     # Create RPC client
-    rpc = jsonrpc_client(connector)
+    rpc = jsonrpc_example_client(connector)
 
     # Use myclass methods
     result = rpc.myclass_echo("Hello RPC!")

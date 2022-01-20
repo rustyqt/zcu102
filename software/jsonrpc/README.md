@@ -7,6 +7,10 @@
       -> gen_jsonrpc_client.sh
     -> common
       -> spec.json
+      -> example_spec.json
+    -> app
+      -> server.py
+      -> client.py
     -> examples
       -> server.py
       -> client.py

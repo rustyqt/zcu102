@@ -13,10 +13,14 @@ AES_GCM_BASE_ADDR = 0xa0020000
 key = get_random_bytes(32)
 iv  = get_random_bytes(12)
 
+key0x = hex(int.from_bytes(key, byteorder='big'))
+iv0x = hex(int.from_bytes(iv, byteorder='big'))
+
 aad_len = 32
 pt_len  = 2**22
 
-aesgcm = aes_gcm(AES_GCM_BASE_ADDR, key, iv, aad_len, pt_len)
+dma = axidma()
+aesgcm = aes_gcm(AES_GCM_BASE_ADDR, dma)
 
 pt = get_random_bytes(pt_len)
 tx_id = get_random_bytes(20)
@@ -43,6 +47,9 @@ for i in range(aad_pt_length):
 
 # Start Timer
 time_sw_start = datetime.now()
+
+# Configure Crypto Kernel
+aesgcm.config(key0x, iv0x, aad_len, pt_len)
 
 # Start Encryption
 ct, tag = aesgcm.encrypt_sw()
@@ -75,7 +82,11 @@ print("tag[" + str(len(tag)) + "] = " + str(tag.hex()))
 # Start Timer
 time_hw_start = datetime.now()
 
-aesgcm.encrypt()
+# Configure Crypto Kernel
+aesgcm.config(key0x, iv0x, aad_len, pt_len)
+
+# Start Encryption
+aesgcm.encrypt(ibuf="aad_pt", obuf="aad_ct_tag")
 
 # Stop Timer
 time_hw_end = datetime.now()

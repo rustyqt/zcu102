@@ -1,64 +1,103 @@
 [
     {
-        "name": "myclass_add",
-        "params": {
-            "a": 0,
-            "b": 0
-        },
-        "returns": 0
-    },
-    {
-        "name": "myclass_echo",
+        "name": "demo_echo",
         "params": {
             "message": ""
         },
         "returns": ""
     },
     {
-        "name": "myclass_get_val",
+        "name": "demo_get_val",
         "params": {},
         "returns": 0
     },
     {
-        "name": "myclass_mult",
-        "params": {
-            "a": 0,
-            "b": 0
-        },
-        "returns": 0
-    },
-    {
-        "name": "myclass_set_val",
+        "name": "demo_set_val",
         "params": {
             "value": 0
         },
         "returns": 0
     },
     {
-        "name": "mytftp_get_ip",
-        "params": {},
-        "returns": ""
-    },
-    {
-        "name": "mytftp_set_ip",
+        "name": "tftp_config",
         "params": {
-            "ip": ""
+            "host": "",
+            "port": 0,
+            "blksize": 0
         },
         "returns": 0
     },
     {
-        "name": "myaes_config",
+        "name": "tftp_download",
         "params": {
-            "key": 0,
-            "iv": 0
+            "remote_filename": "",
+            "local_filename": "",
+            "dma": false
         },
         "returns": 0
     },
     {
-        "name": "myaes_encrypt",
+        "name": "tftp_upload",
         "params": {
-            "source": "",
-            "target": ""
+            "remote_filename": "",
+            "local_filename": "",
+            "dma": false
+        },
+        "returns": 0
+    },
+    {
+        "name": "axidma_free",
+        "params": {
+            "buf_id": ""
+        },
+        "returns": 0
+    },
+    {
+        "name": "axidma_malloc",
+        "params": {
+            "buf_id": "",
+            "size": 0
+        },
+        "returns": 0
+    },
+    {
+        "name": "axidma_oneway_transfer",
+        "params": {
+            "dir": 0,
+            "ch_id": 0,
+            "buf_id": "",
+            "buf_len": 0
+        },
+        "returns": 0
+    },
+    {
+        "name": "axidma_twoway_transfer",
+        "params": {
+            "tx_ch_id": 0,
+            "tx_buf_id": "",
+            "tx_buf_len": 0,
+            "rx_ch_id": 0,
+            "rx_buf_id": "",
+            "rx_buf_len": 0,
+            "wait": false
+        },
+        "returns": 0
+    },
+    {
+        "name": "aes_gcm_config",
+        "params": {
+            "key0x": "",
+            "iv0x": "",
+            "aad_len": 0,
+            "pt_len": 0
+        },
+        "returns": 0
+    },
+    {
+        "name": "aes_gcm_encrypt",
+        "params": {
+            "ibuf": "",
+            "obuf": ""
         },
         "returns": 0
     }

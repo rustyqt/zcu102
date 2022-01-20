@@ -54,8 +54,8 @@ class myaes():
 
 rpc = jsonrpc_server()
 
-rpc.add(myclass())
-rpc.add(mytftp())
-rpc.add(myaes())
+rpc.add(myclass(), "../common/example_spec.json")
+rpc.add(mytftp(), "../common/example_spec.json")
+rpc.add(myaes(), "../common/example_spec.json")
 
 rpc.run()

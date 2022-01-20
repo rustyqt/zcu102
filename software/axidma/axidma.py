@@ -16,7 +16,7 @@ class axidma():
         """
 
         # Send data to AES GCM via AXI DMA
-        self.clib = ctypes.CDLL("./lib/libaxidma.so")
+        self.clib = ctypes.CDLL("/home/root/software/axidma/lib/libaxidma.so")
 
         # Define return types
         self.clib.axidma_init.restype            = ctypes.POINTER(axidma_dev)
@@ -55,16 +55,17 @@ class axidma():
         print("TX DMA channel number(s): " + str(self.tx_ch))
         print("RX DMA channel number(s): " + str(self.rx_ch))
 
-    def malloc(self, buf_id, size):
+    def malloc(self, buf_id : str, size : int) -> int:
         """ 
         Description:
            Allocates physical memory for DMA purposes
         
         Parameters:
-            size    <int> : 0 = SW -> HW ( From self.ibuf )
-                            1 = HW -> SW ( To self.obuf )
+            buf_id  <str> : Unique Buffer ID
+            size    <int> : Size of allocated buffer in bytes
         Returns:
-            buf_id <int>  : An index which refers to the allocated buffer
+            ret     <int> : 0 = Success
+                            1 = Failure
         """
         assert buf_id not in self.buf, "Error: DMA Buffer ID already exists"
         assert buf_id not in self.size, "Error: DMA Buffer ID already exists"
@@ -77,34 +78,72 @@ class axidma():
         self.size[buf_id] = size
         
         return 0
+    
+    def free(self, buf_id : str) -> int:
+        """ 
+        Description:
+           Frees physical memory for DMA purposes
+        
+        Parameters:
+            buf_id  <str> : Unique Buffer ID
+        Returns:
+            ret     <int> :  0 = Success
+                            -1 = DMA Buffer is not allocated
+                            -2 = DMA Buffer not found
+                            -3 = No DMA Device found
+        """
+        # Cleanup Resources
+        if self.dev != None:
+            # Free memory
+            if buf_id in self.buf:
+                if self.buf[buf_id] != None:
+                    self.clib.axidma_free(self.dev, self.buf[buf_id], self.size[buf_id])
+                    del(self.buf[buf_id])
+                    del(self.size[buf_id])
+                    return 0
+                else:
+                    return -1
+            else:
+                return -2
+        else:
+            return -3
 
 
-    def oneway_transfer(self, channel, buf_id, buf_len):
+
+    def oneway_transfer(self, dir : int, ch_id : int, buf_id : str, buf_len : int) -> int:
         """ 
         Description:
             Performs one-way DMA transfer
         
         Parameters:
-            channel <int> : 0 = SW -> HW ( From self.ibuf )
-                            1 = HW -> SW ( To self.obuf )
-            buf_id  <int> : DMA buffer ID specified at malloc() call
+            dir     <int> : 0 = TX (PS -> PL)
+                            1 = RX (PL -> PS)
+            ch_id   <int> : Selects channel
+            buf_id  <str> : DMA buffer ID specified at malloc() call
             buf_len <int> : Data in bytes to be transferred
         """
         print("Run AXI DMA one-way transfer")
-
+        if dir == 0:
+            channel = self.tx_ch[ch_id]
+        else:
+            channel = self.rx_ch[ch_id]
+        
         ret = self.clib.axidma_oneway_transfer(self.dev, channel, self.buf[buf_id], buf_len, True)
 
         assert ret == 0, "Error: AXI DMA one-way transfer failed!"
-        
+        return 0
 
-    def twoway_transfer(self, tx_channel, tx_buf_id, tx_buf_len, rx_channel, rx_buf_id, rx_buf_len, wait=True):
+    def twoway_transfer(self,   tx_ch_id : int, tx_buf_id : str, tx_buf_len : int, 
+                                rx_ch_id : int, rx_buf_id : str, rx_buf_len : int, wait : bool = True) -> int:
         """ 
         Description:
             Performs two-way DMA transfer, from self.ibuf and to self.obuf.
         
         Parameters:
+            tx_ch_id    <int> : TX Channel ID
             tx_buf_id   <str> : TX DMA buffer ID
             tx_buf_len  <int> : Data in bytes to be send
+            rx_ch_id    <int> : RX Channel ID
             rx_buf_id   <str> : RX DMA buffer ID
             rx_buf_len  <int> : Data in bytes to be received
         """
@@ -112,14 +151,17 @@ class axidma():
         assert self.size[tx_buf_id] >= tx_buf_len, "Error: TX DMA buffer size not large enough."
         assert self.size[rx_buf_id] >= rx_buf_len, "Error: RX DMA buffer size not large enough."
 
+        tx_channel = self.tx_ch[tx_ch_id]
+        rx_channel = self.rx_ch[rx_ch_id]
+
         # Run AXI DMA two-way transfer
         ret = self.clib.axidma_twoway_transfer(self.dev, \
                                         tx_channel, self.buf[tx_buf_id], tx_buf_len, None, \
                                         rx_channel, self.buf[rx_buf_id], rx_buf_len, None, wait)
         
         assert ret == 0, "Error: AXI DMA two-way transfer failed!"
+        return 0
         
-    
     def __exit__(self, exception_type, exception_value, exception_traceback):
         # Print Exception
         if exception_type != None:

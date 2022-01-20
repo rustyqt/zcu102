@@ -160,25 +160,52 @@ Check devices major numbers
 
 ## U-boot TFTP
 
-setenv serverip 192.168.0.142
-setenv ipaddr 192.168.0.144
+### Configure TFTP Server
 
-tftpboot 0x3000000 Image
-tftpboot 0x2A00000 system.dtb
-tftpboot 0x5000000 rootfs.cpio.gz.u-boot
-booti 0x3000000 0x5000000 0x2A00000
+    sudo apt install tftpd-hpa
+
+    vi /etc/default/tftpd-hpa
+
+    # /etc/default/tftpd-hpa
+
+    TFTP_USERNAME="tftp"
+    TFTP_DIRECTORY="/srv/tftp"
+    TFTP_ADDRESS=":69"
+    TFTP_OPTIONS="--secure -c"
 
 
-setenv bootcmd_tftp "tftpboot 0x3000000 Image; tftpboot 0x2A00000 system.dtb; tftpboot 0x5000000 rootfs.cpio.gz.u-boot; booti 0x3000000 0x5000000 0x2A00000"
+    netstat -an | more
 
-setenv boot_targets "tftp mmc0 jtag mmc0 mmc1 qspi0 nand0 usb0 usb1 scsi0 pxe dhcp"
+    systemctl status tftpd-hpa.service
 
-saveenv
+
+### Configure U-boot
+
+    setenv serverip 192.168.0.142
+    setenv ipaddr 192.168.0.144
+
+    tftpboot 0x3000000 Image
+    tftpboot 0x2A00000 system.dtb
+    tftpboot 0x5000000 rootfs.cpio.gz.u-boot
+    booti 0x3000000 0x5000000 0x2A00000
+
+
+    setenv bootcmd_tftp "tftpboot 0x3000000 Image; tftpboot 0x2A00000 system.dtb; tftpboot 0x5000000 rootfs.cpio.gz.u-boot; booti 0x3000000 0x5000000 0x2A00000"
+
+    setenv boot_targets "tftp mmc0 jtag mmc0 mmc1 qspi0 nand0 usb0 usb1 scsi0 pxe dhcp"
+
+    saveenv
+
+### Post-boot TFTP Server Usage (Busybox tftp)
+
+    tftp -g -r system.bit 192.168.0.142
+
+
 
 ## Run Demo Software
 
-    scp -r lynx@192.168.0.142:/home/lynx/git/zcu102/software/aes-gcm .
-    cd aes-gcm/pymods/; chmod a+x install.sh; ./install.sh; cd ..; chmod a+x *.py;
+    cd; rm -rf software/; scp -r lynx@192.168.0.142:/home/lynx/git/zcu102/software .; cd -;
+    cd pymods/; chmod a+x install.sh; ./install.sh; cd ../jsonrpc/app; chmod a+x *.py;
     modprobe xilinx-axidma
     ./run_aes_gcm.py
 

@@ -13,69 +13,107 @@ class jsonrpc_client(client.Client):
     def __init__(self, connector, version='2.0'):
         super(jsonrpc_client, self).__init__(connector, version)
 
-    def myclass_add(self, a, b):
-        parameters = {}
-        parameters['a'] = a
-        parameters['b'] = b
-
-        result = self.call_method('myclass_add', parameters)
-        return result
-
-    def myclass_echo(self, message):
+    def demo_echo(self, message):
         parameters = {}
         parameters['message'] = message
 
-        result = self.call_method('myclass_echo', parameters)
+        result = self.call_method('demo_echo', parameters)
         return result
 
-    def myclass_get_val(self):
+    def demo_get_val(self):
         parameters = None
 
-        result = self.call_method('myclass_get_val', parameters)
+        result = self.call_method('demo_get_val', parameters)
         return result
 
-    def myclass_mult(self, a, b):
-        parameters = {}
-        parameters['a'] = a
-        parameters['b'] = b
-
-        result = self.call_method('myclass_mult', parameters)
-        return result
-
-    def myclass_set_val(self, value):
+    def demo_set_val(self, value):
         parameters = {}
         parameters['value'] = value
 
-        result = self.call_method('myclass_set_val', parameters)
+        result = self.call_method('demo_set_val', parameters)
         return result
 
-    def mytftp_get_ip(self):
-        parameters = None
-
-        result = self.call_method('mytftp_get_ip', parameters)
-        return result
-
-    def mytftp_set_ip(self, ip):
+    def tftp_config(self, blksize, host, port):
         parameters = {}
-        parameters['ip'] = ip
+        parameters['blksize'] = blksize
+        parameters['host'] = host
+        parameters['port'] = port
 
-        result = self.call_method('mytftp_set_ip', parameters)
+        result = self.call_method('tftp_config', parameters)
         return result
 
-    def myaes_config(self, iv, key):
+    def tftp_download(self, dma, local_filename, remote_filename):
         parameters = {}
-        parameters['iv'] = iv
-        parameters['key'] = key
+        parameters['dma'] = dma
+        parameters['local_filename'] = local_filename
+        parameters['remote_filename'] = remote_filename
 
-        result = self.call_method('myaes_config', parameters)
+        result = self.call_method('tftp_download', parameters)
         return result
 
-    def myaes_encrypt(self, source, target):
+    def tftp_upload(self, dma, local_filename, remote_filename):
         parameters = {}
-        parameters['source'] = source
-        parameters['target'] = target
+        parameters['dma'] = dma
+        parameters['local_filename'] = local_filename
+        parameters['remote_filename'] = remote_filename
 
-        result = self.call_method('myaes_encrypt', parameters)
+        result = self.call_method('tftp_upload', parameters)
+        return result
+
+    def axidma_free(self, buf_id):
+        parameters = {}
+        parameters['buf_id'] = buf_id
+
+        result = self.call_method('axidma_free', parameters)
+        return result
+
+    def axidma_malloc(self, buf_id, size):
+        parameters = {}
+        parameters['buf_id'] = buf_id
+        parameters['size'] = size
+
+        result = self.call_method('axidma_malloc', parameters)
+        return result
+
+    def axidma_oneway_transfer(self, buf_id, buf_len, ch_id, dir):
+        parameters = {}
+        parameters['buf_id'] = buf_id
+        parameters['buf_len'] = buf_len
+        parameters['ch_id'] = ch_id
+        parameters['dir'] = dir
+
+        result = self.call_method('axidma_oneway_transfer', parameters)
+        return result
+
+    def axidma_twoway_transfer(self, rx_buf_id, rx_buf_len, rx_ch_id, tx_buf_id, tx_buf_len, tx_ch_id, wait):
+        parameters = {}
+        parameters['rx_buf_id'] = rx_buf_id
+        parameters['rx_buf_len'] = rx_buf_len
+        parameters['rx_ch_id'] = rx_ch_id
+        parameters['tx_buf_id'] = tx_buf_id
+        parameters['tx_buf_len'] = tx_buf_len
+        parameters['tx_ch_id'] = tx_ch_id
+        parameters['wait'] = wait
+
+        result = self.call_method('axidma_twoway_transfer', parameters)
+        return result
+
+    def aes_gcm_config(self, aad_len, iv0x, key0x, pt_len):
+        parameters = {}
+        parameters['aad_len'] = aad_len
+        parameters['iv0x'] = iv0x
+        parameters['key0x'] = key0x
+        parameters['pt_len'] = pt_len
+
+        result = self.call_method('aes_gcm_config', parameters)
+        return result
+
+    def aes_gcm_encrypt(self, ibuf, obuf):
+        parameters = {}
+        parameters['ibuf'] = ibuf
+        parameters['obuf'] = obuf
+
+        result = self.call_method('aes_gcm_encrypt', parameters)
         return result
 
 
