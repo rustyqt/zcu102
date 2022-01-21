@@ -38,10 +38,18 @@ class tftp():
                             1 = Failed
         """
         
-
         if dma:
-            fp = axidmabuf(self.dma, local_filename)
-            self.client.download(remote_filename, fp)
+            # Open DMA Buffer
+            dmabuf = axidmabuf(self.dma, local_filename)
+
+            # Download File
+            self.client.download(remote_filename, dmabuf)
+
+            # Write received data to DMA buffer
+            dmabuf.flush()
+
+            # Close DMA Buffer
+            dmabuf.close()
         else:
             self.client.download(remote_filename, local_filename)
 
@@ -60,8 +68,14 @@ class tftp():
         """
 
         if dma:
-            fp = axidmabuf(self.dma, local_filename)
-            self.client.upload(remote_filename, fp)
+            # Open DMA Buffer
+            dmabuf = axidmabuf(self.dma, local_filename)
+
+            # Upload DMA buffer content
+            self.client.upload(remote_filename, dmabuf)
+
+            # Close DMA Buffer
+            dmabuf.close()
         else:
             self.client.upload(remote_filename, local_filename)
         

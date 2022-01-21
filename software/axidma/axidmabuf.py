@@ -1,3 +1,5 @@
+import ctypes
+
 class axidmabuf():
     """File-like object for DMA buffers.
 
@@ -13,9 +15,12 @@ class axidmabuf():
         Description:
             AXI DMA class constructor.
         """
+        assert buf_id in dma.buf, "DMA Buffer ID not found."
+
         self.dma = dma
         self.buf_id = buf_id
         self.offset = 0
+        self.data = b''
         self.closed = False
 
     def close(self):
@@ -28,7 +33,7 @@ class axidmabuf():
         not possible.
         """
 
-        raise NotImplementedError
+        return self.offset
 
     def read(self, size=-1):
         """Returns 'size' amount of bytes or less if there is no more data.
@@ -68,8 +73,19 @@ class axidmabuf():
         Returns Nothing.
         Raise IOError in case the seek operation asn't possible.
         """
+        assert whence in [0, 1, 2], "whence=0 is absolute, whence=1 is relative, whence=2 is relative to the end."
 
-        raise NotImplementedError
+        # Absolute
+        if whence == 0:
+            self.offset = offset
+
+        # Relative
+        if whence == 1:
+            self.offset += offset
+
+        # Relative to the end
+        if whence == 2:
+            self.offset = self.dma.size[self.buf_id] + offset
 
     # For loading, but optional
 
@@ -83,7 +99,7 @@ class axidmabuf():
         Will be used for error messages and type detection.
         """
 
-        raise NotImplementedError
+        return self.buf_id
 
     # For writing
 
@@ -94,15 +110,8 @@ class axidmabuf():
         Raises IOError
         """
         
-        assert self.dma.size[self.buf_id] >= len(data), "Error: DMA buffer size not large enough." 
-        assert self.buf_id in self.dma.buf, "DMA Buffer ID not found."
+        self.data += data
         
-        #TODO: Improve Performance of this for loop!
-        for i in range(len(data)):
-            self.dma.buf[self.buf_id][self.offset+i] = data[i]
-
-        self.offset += len(data)
-
     def truncate(self, size=None):
         """Truncate to the current position or size if size is given.
 
@@ -120,11 +129,16 @@ class axidmabuf():
     def flush(self):
         """Flush the write buffer.
 
+
         Returns Nothing.
         Raises IOError.
         """
+        
+        assert self.dma.size[self.buf_id] >= len(self.data), "Error: DMA buffer size not large enough." 
 
-        raise NotImplementedError
+        ctypes.memmove(self.dma.buf[self.buf_id], ctypes.create_string_buffer(self.data), len(self.data))
+        
+        self.data = b''
 
     # For writing, but optional
 
