@@ -163,6 +163,10 @@ class axidma():
         return 0
         
     def __exit__(self, exception_type, exception_value, exception_traceback):
+        """
+        Description:
+            Print exceptions and clean-up resources
+        """
         # Print Exception
         if exception_type != None:
             print(str(exception_type) + ": " + str(exception_value))
